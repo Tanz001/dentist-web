@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Space+Grotesk:wght@300..700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Fraunces", Georgia, serif;
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "Space Grotesk", monospace;
+  
+  --color-bg-base: #FFFFFF;
+  --color-bg-alt: #CAF0F8;
+  --color-primary-teal: #0077B6;
+  --color-cta-coral: #00B4D8;
+  --color-deep-navy: #03045E;
+  --color-text-primary: #03045E;
+  --color-text-muted: #5F7D95;
+  --color-highlight-glow: #90E0EF;
+}
+
+/* Custom cursor and smooth scroll overrides */
+body {
+  background-color: #FFFFFF;
+  color: #03045E;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overflow: clip;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* Scroll-based outline parallax */
+.outline-tooth-path {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: drawLine 4s ease forwards;
+}
+
+@keyframes drawLine {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+

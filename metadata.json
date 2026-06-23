@@ -1,0 +1,6 @@
+{
+  "name": "Aura Dental",
+  "description": "An award-winning, cinematic, scroll-driven website for Aura Dental clinical-wellness consultation bookings.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
