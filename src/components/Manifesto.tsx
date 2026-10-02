@@ -57,7 +57,7 @@ export default function Manifesto() {
             <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden shadow-xl">
               <img
                 src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&q=80&w=1200"
-                alt="Aura Dental private treatment suite"
+                alt="Aesthetic Lounge private treatment suite"
                 className="absolute inset-0 w-full h-full object-cover"
                 referrerPolicy="no-referrer"
               />

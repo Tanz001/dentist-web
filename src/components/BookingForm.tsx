@@ -94,7 +94,7 @@ export default function BookingForm({
       x: 10 + Math.random() * 80, // percentage 10% - 90%
       y: 70 + Math.random() * 30, // vertical starting line bottom
       size: 6 + Math.random() * 8, // diameter in pixels
-      color: Math.random() > 0.5 ? '#C4A962' : '#8BA399',
+      color: Math.random() > 0.5 ? '#C9A84C' : '#0B1F3A',
       scale: 0.5 + Math.random() * 0.8,
     }));
     setConfettiDots(dots);

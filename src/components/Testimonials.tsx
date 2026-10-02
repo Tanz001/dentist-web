@@ -5,7 +5,7 @@ import { Testimonial } from '../types';
 const testimonials: Testimonial[] = [
   {
     id: 'quote-1',
-    quote: "The first time I didn't feel panic in a dental chair. Aura is completely quiet, and Dr. Rostova sculpted my veneer with microscopic artistry.",
+    quote: "The first time I didn't feel panic in a dental chair. Aesthetic Lounge is completely quiet, and the veneer work was done with microscopic artistry.",
     patientName: 'Victoria Sterling',
     serviceReceived: 'Cosmetic Veneers',
     rating: 5,
@@ -140,7 +140,7 @@ export default function Testimonials() {
                               <p className="text-sm text-white/45 mt-0.5">{t.serviceReceived}</p>
                             </div>
                             <span className="hidden sm:inline text-[10px] uppercase tracking-[0.2em] text-white/25 font-mono">
-                              Aura Dental
+                              Aesthetic Lounge
                             </span>
                           </div>
                         </div>

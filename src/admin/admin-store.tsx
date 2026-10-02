@@ -13,6 +13,8 @@ import {
   AUTH_KEY,
   BOOKINGS_KEY,
   DEFAULT_SETTINGS,
+  DOCTOR_AUTH_KEY,
+  DOCTOR_PASSWORD,
   SEED_DOCTORS,
   SEED_SERVICES,
   STORAGE_KEY,
@@ -32,6 +34,10 @@ type AdminContextValue = {
   authenticated: boolean;
   login: (password: string) => boolean;
   logout: () => void;
+  doctorId: string | null;
+  doctorLogin: (doctorId: string, password: string) => boolean;
+  doctorLogout: () => void;
+  currentDoctor: AdminDoctor | null;
   appointments: AdminAppointment[];
   doctors: AdminDoctor[];
   services: AdminService[];
@@ -40,6 +46,9 @@ type AdminContextValue = {
   updateAppointmentNotes: (id: string, notes: string) => void;
   deleteAppointment: (id: string) => void;
   updateDoctor: (id: string, patch: Partial<AdminDoctor>) => void;
+  addDoctor: (input: Omit<AdminDoctor, 'id'>) => AdminDoctor;
+  deleteDoctor: (id: string) => void;
+  updateAppointment: (id: string, patch: Partial<AdminAppointment>) => void;
   updateService: (id: string, patch: Partial<AdminService>) => void;
   updateSettings: (patch: Partial<AdminSettings>) => void;
   resetDemoData: () => void;
@@ -106,6 +115,7 @@ function mergeWebsiteBookings(existing: AdminAppointment[]): AdminAppointment[] 
 export function AdminProvider({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(false);
   const [authenticated, setAuthenticated] = useState(false);
+  const [doctorId, setDoctorId] = useState<string | null>(null);
   const [appointments, setAppointments] = useState<AdminAppointment[]>([]);
   const [doctors, setDoctors] = useState<AdminDoctor[]>(SEED_DOCTORS);
   const [services, setServices] = useState<AdminService[]>(SEED_SERVICES);
@@ -134,6 +144,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
       setAppointments(seedAppointments());
     }
     setAuthenticated(localStorage.getItem(AUTH_KEY) === '1');
+    setDoctorId(localStorage.getItem(DOCTOR_AUTH_KEY));
     setReady(true);
   }, []);
 
@@ -159,6 +170,29 @@ export function AdminProvider({ children }: { children: ReactNode }) {
     setAuthenticated(false);
   }, []);
 
+  const doctorLogin = useCallback(
+    (id: string, password: string) => {
+      const exists = doctors.some((d) => d.id === id && d.active);
+      if (exists && password.trim() === DOCTOR_PASSWORD) {
+        localStorage.setItem(DOCTOR_AUTH_KEY, id);
+        setDoctorId(id);
+        return true;
+      }
+      return false;
+    },
+    [doctors],
+  );
+
+  const doctorLogout = useCallback(() => {
+    localStorage.removeItem(DOCTOR_AUTH_KEY);
+    setDoctorId(null);
+  }, []);
+
+  const currentDoctor = useMemo(
+    () => doctors.find((d) => d.id === doctorId) ?? null,
+    [doctors, doctorId],
+  );
+
   const updateAppointmentStatus = useCallback((id: string, status: AppointmentStatus) => {
     setAppointments((prev) =>
       prev.map((a) =>
@@ -181,6 +215,27 @@ export function AdminProvider({ children }: { children: ReactNode }) {
 
   const updateDoctor = useCallback((id: string, patch: Partial<AdminDoctor>) => {
     setDoctors((prev) => prev.map((d) => (d.id === id ? { ...d, ...patch } : d)));
+  }, []);
+
+  const addDoctor = useCallback((input: Omit<AdminDoctor, 'id'>) => {
+    const doctor: AdminDoctor = {
+      ...input,
+      id: `dentist-${Date.now()}`,
+    };
+    setDoctors((prev) => [doctor, ...prev]);
+    return doctor;
+  }, []);
+
+  const deleteDoctor = useCallback((id: string) => {
+    setDoctors((prev) => prev.filter((d) => d.id !== id));
+  }, []);
+
+  const updateAppointment = useCallback((id: string, patch: Partial<AdminAppointment>) => {
+    setAppointments((prev) =>
+      prev.map((a) =>
+        a.id === id ? { ...a, ...patch, updatedAt: new Date().toISOString() } : a,
+      ),
+    );
   }, []);
 
   const updateService = useCallback((id: string, patch: Partial<AdminService>) => {
@@ -278,6 +333,10 @@ export function AdminProvider({ children }: { children: ReactNode }) {
         authenticated,
         login,
         logout,
+        doctorId,
+        doctorLogin,
+        doctorLogout,
+        currentDoctor,
         appointments,
         doctors,
         services,
@@ -286,6 +345,9 @@ export function AdminProvider({ children }: { children: ReactNode }) {
         updateAppointmentNotes,
         deleteAppointment,
         updateDoctor,
+        addDoctor,
+        deleteDoctor,
+        updateAppointment,
         updateService,
         updateSettings,
         resetDemoData,

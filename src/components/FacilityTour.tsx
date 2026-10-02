@@ -97,7 +97,7 @@ export default function FacilityTour() {
         >
           <img
             src="https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&q=80&w=1200"
-            alt="Aura Dental reception lounge"
+            alt="Aesthetic Lounge reception"
             referrerPolicy="no-referrer"
             className="w-full h-full object-cover opacity-30 sepia-[0.15]"
           />

@@ -16,7 +16,14 @@ const PIPELINE: AppointmentStatus[] = ['pending', 'confirmed', 'checked-in', 'co
 
 export function AdminAppointmentDetail() {
   const { id } = useParams();
-  const { appointments, updateAppointmentStatus, updateAppointmentNotes } = useAdmin();
+  const {
+    appointments,
+    doctors,
+    services,
+    updateAppointmentStatus,
+    updateAppointmentNotes,
+    updateAppointment,
+  } = useAdmin();
   const appointment = appointments.find((a) => a.id === id);
 
   if (!appointment) {
@@ -31,6 +38,7 @@ export function AdminAppointmentDetail() {
   }
 
   const currentIdx = PIPELINE.indexOf(appointment.status);
+  const activeDoctors = doctors.filter((d) => d.active);
 
   return (
     <div className="space-y-8">
@@ -48,7 +56,9 @@ export function AdminAppointmentDetail() {
             {appointment.preferredDate} · {appointment.preferredTime}
           </p>
         </div>
-        <span className={`rounded-full px-4 py-1.5 text-[12px] font-medium ${STATUS_META[appointment.status].className}`}>
+        <span
+          className={`rounded-full px-4 py-1.5 text-[12px] font-medium ${STATUS_META[appointment.status].className}`}
+        >
           {STATUS_META[appointment.status].label}
         </span>
       </div>
@@ -156,22 +166,83 @@ export function AdminAppointmentDetail() {
             <Stethoscope className="h-4 w-4 text-accent-gold" />
             <h2 className="font-serif text-xl">Care plan</h2>
           </div>
-          <dl className="space-y-4 text-[13px]">
-            <div>
-              <dt className="kicker !text-[10px]">Service</dt>
-              <dd className="mt-1 text-base font-medium">{appointment.service}</dd>
+          <div className="space-y-4 text-[13px]">
+            <label className="block">
+              <span className="kicker mb-1.5 block !text-[10px]">Service</span>
+              <select
+                value={appointment.service}
+                onChange={(e) => updateAppointment(appointment.id, { service: e.target.value })}
+                className="w-full rounded-xl border border-bg-warm bg-white px-3 py-2.5 outline-none focus:border-accent-gold"
+              >
+                {services.map((s) => (
+                  <option key={s.id} value={s.title}>
+                    {s.title}
+                  </option>
+                ))}
+                {!services.some((s) => s.title === appointment.service) && (
+                  <option value={appointment.service}>{appointment.service}</option>
+                )}
+              </select>
+            </label>
+
+            <label className="block">
+              <span className="kicker mb-1.5 block !text-[10px]">Assign doctor</span>
+              <select
+                value={appointment.dentistName}
+                onChange={(e) => updateAppointment(appointment.id, { dentistName: e.target.value })}
+                className="w-full rounded-xl border border-bg-warm bg-white px-3 py-2.5 outline-none focus:border-accent-gold"
+              >
+                {activeDoctors.map((d) => (
+                  <option key={d.id} value={d.name}>
+                    {d.name} · {d.specialty}
+                  </option>
+                ))}
+                {!activeDoctors.some((d) => d.name === appointment.dentistName) && (
+                  <option value={appointment.dentistName}>{appointment.dentistName}</option>
+                )}
+              </select>
+            </label>
+
+            <div className="grid grid-cols-2 gap-3">
+              <label className="block">
+                <span className="kicker mb-1.5 block !text-[10px]">Date</span>
+                <input
+                  type="date"
+                  value={appointment.preferredDate}
+                  onChange={(e) =>
+                    updateAppointment(appointment.id, { preferredDate: e.target.value })
+                  }
+                  className="w-full rounded-xl border border-bg-warm px-3 py-2.5 outline-none focus:border-accent-gold"
+                />
+              </label>
+              <label className="block">
+                <span className="kicker mb-1.5 block !text-[10px]">Time</span>
+                <select
+                  value={appointment.preferredTime}
+                  onChange={(e) =>
+                    updateAppointment(appointment.id, { preferredTime: e.target.value })
+                  }
+                  className="w-full rounded-xl border border-bg-warm bg-white px-3 py-2.5 outline-none focus:border-accent-gold"
+                >
+                  {[
+                    '09:00 AM',
+                    '10:00 AM',
+                    '10:30 AM',
+                    '11:00 AM',
+                    '01:00 PM',
+                    '02:00 PM',
+                    '02:30 PM',
+                    '04:00 PM',
+                    '05:00 PM',
+                  ].map((t) => (
+                    <option key={t} value={t}>
+                      {t}
+                    </option>
+                  ))}
+                </select>
+              </label>
             </div>
-            <div>
-              <dt className="kicker !text-[10px]">Doctor</dt>
-              <dd className="mt-1">{appointment.dentistName}</dd>
-            </div>
-            <div>
-              <dt className="kicker !text-[10px]">When</dt>
-              <dd className="mt-1">
-                {appointment.preferredDate} at {appointment.preferredTime}
-              </dd>
-            </div>
-          </dl>
+          </div>
         </section>
       </div>
 

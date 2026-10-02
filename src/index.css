@@ -6,30 +6,31 @@
   --font-sans: "DM Sans", system-ui, -apple-system, sans-serif;
   --font-mono: "DM Sans", system-ui, sans-serif;
 
-  --color-bg-base: #F7F4EF;
-  --color-bg-ivory: #F7F4EF;
-  --color-bg-cream: #EFEAE2;
-  --color-bg-warm: #E8E2D8;
-  --color-bg-charcoal: #1A1F24;
-  --color-bg-alt: #EFEAE2;
+  /* Soft ivory + navy / gold from logo */
+  --color-bg-base: #F7F5F2;
+  --color-bg-ivory: #F7F5F2;
+  --color-bg-cream: #EFEBE4;
+  --color-bg-warm: #E6E0D6;
+  --color-bg-charcoal: #0B1F3A;
+  --color-bg-alt: #EFEBE4;
 
-  --color-text-primary: #1A1F24;
-  --color-text-muted: #6B7280;
+  --color-text-primary: #0B1F3A;
+  --color-text-muted: #5C6570;
 
-  --color-accent-gold: #2A9D8F;
-  --color-accent-gold-light: #7EC8BE;
-  --color-accent-sage: #2A9D8F;
-  --color-accent-sage-deep: #1F7A6E;
+  --color-accent-gold: #C9A84C;
+  --color-accent-gold-light: #E0C878;
+  --color-accent-sage: #C9A84C;
+  --color-accent-sage-deep: #A68732;
 
-  --color-primary-teal: #2A9D8F;
-  --color-cta-coral: #2A9D8F;
-  --color-deep-navy: #1A1F24;
-  --color-highlight-glow: #7EC8BE;
+  --color-primary-teal: #C9A84C;
+  --color-cta-coral: #C9A84C;
+  --color-deep-navy: #0B1F3A;
+  --color-highlight-glow: #E0C878;
 }
 
 body {
-  background-color: #F7F4EF;
-  color: #1A1F24;
+  background-color: #F7F5F2;
+  color: #0B1F3A;
   font-family: var(--font-sans);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
@@ -54,7 +55,7 @@ html.lenis body {
   display: block;
   width: 40px;
   height: 2px;
-  background-color: #2A9D8F;
+  background-color: #C9A84C;
 }
 
 .kicker {
@@ -62,7 +63,7 @@ html.lenis body {
   font-size: 0.6875rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #2A9D8F;
+  color: #C9A84C;
   font-weight: 600;
 }
 
@@ -71,7 +72,7 @@ html.lenis body {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  background: #2A9D8F;
+  background: #0B1F3A;
   color: #fff;
   font-family: var(--font-sans);
   font-size: 0.8125rem;
@@ -86,8 +87,9 @@ html.lenis body {
 }
 
 .btn-primary:hover {
-  background: #1F7A6E;
-  box-shadow: 0 10px 28px rgba(42, 157, 143, 0.28);
+  background: #C9A84C;
+  color: #0B1F3A;
+  box-shadow: 0 10px 28px rgba(201, 168, 76, 0.35);
 }
 
 .btn-ghost {
@@ -118,7 +120,6 @@ html.lenis body {
   }
 }
 
-/* Hide scrollbars on horizontal doctor track */
 .scrollbar-none {
   -ms-overflow-style: none;
   scrollbar-width: none;

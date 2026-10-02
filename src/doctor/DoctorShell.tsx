@@ -6,15 +6,14 @@ import {
   LayoutDashboard,
   LogOut,
   Menu,
-  Settings,
-  Stethoscope,
+  UserRound,
   Users,
   X,
-  Sparkles,
 } from 'lucide-react';
 import { useEffect, useState, type ReactNode } from 'react';
 import { BRAND } from '../brand';
-import { useAdmin } from './admin-store';
+import { useAdmin } from '../admin/admin-store';
+import { todayISO } from '../admin/admin-data';
 
 const NAV: {
   to: string;
@@ -22,20 +21,25 @@ const NAV: {
   icon: typeof LayoutDashboard;
   end?: boolean;
 }[] = [
-  { to: '/admin', label: 'Dashboard', icon: LayoutDashboard, end: true },
-  { to: '/admin/appointments', label: 'Appointments', icon: CalendarDays },
-  { to: '/admin/patients', label: 'Patients', icon: Users },
-  { to: '/admin/doctors', label: 'Doctors', icon: Stethoscope },
-  { to: '/admin/services', label: 'Services', icon: Sparkles },
-  { to: '/admin/settings', label: 'Settings', icon: Settings },
+  { to: '/doctor', label: 'My day', icon: LayoutDashboard, end: true },
+  { to: '/doctor/appointments', label: 'My appointments', icon: CalendarDays },
+  { to: '/doctor/patients', label: 'My patients', icon: Users },
+  { to: '/doctor/profile', label: 'Profile', icon: UserRound },
 ];
 
-export function AdminShell({ children }: { children?: ReactNode }) {
-  const { logout, stats, settings } = useAdmin();
+export function DoctorShell({ children }: { children?: ReactNode }) {
+  const { doctorLogout, currentDoctor, appointments, settings } = useAdmin();
   const navigate = useNavigate();
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const todayPending = appointments.filter(
+    (a) =>
+      a.dentistName === currentDoctor?.name &&
+      a.preferredDate === todayISO() &&
+      (a.status === 'pending' || a.status === 'confirmed' || a.status === 'checked-in'),
+  ).length;
 
   useEffect(() => {
     setMobileOpen(false);
@@ -67,9 +71,9 @@ export function AdminShell({ children }: { children?: ReactNode }) {
               )}
               <Icon className={`h-4 w-4 shrink-0 ${isActive ? 'text-accent-gold' : ''}`} />
               {!compact && <span>{label}</span>}
-              {!compact && to === '/admin/appointments' && stats.pendingCount > 0 && (
+              {!compact && to === '/doctor/appointments' && todayPending > 0 && (
                 <span className="ml-auto rounded-full bg-accent-gold px-1.5 py-0.5 text-[10px] font-semibold text-bg-charcoal">
-                  {stats.pendingCount}
+                  {todayPending}
                 </span>
               )}
             </>
@@ -86,15 +90,19 @@ export function AdminShell({ children }: { children?: ReactNode }) {
           collapsed ? 'w-[72px]' : 'w-[260px]'
         }`}
       >
-        <div className={`flex h-16 items-center border-b border-white/10 px-4 ${collapsed ? 'justify-center' : ''}`}>
+        <div
+          className={`flex h-16 items-center border-b border-white/10 px-4 ${collapsed ? 'justify-center' : ''}`}
+        >
           {!collapsed ? (
             <div className="min-w-0">
               <img
                 src={BRAND.logoSrc}
-                alt={settings.clinicName}
-                className="mb-0.5 h-8 w-auto max-w-[160px] rounded-md bg-white object-contain px-1.5 py-0.5"
+                alt=""
+                className="mb-0.5 h-8 w-auto max-w-[140px] rounded-md bg-white object-contain px-1.5 py-0.5"
               />
-              <p className="kicker !text-[9px] !text-accent-gold-light mt-0.5">Admin Console</p>
+              <p className="mt-0.5 truncate text-[11px] text-accent-gold-light">
+                {currentDoctor?.name ?? settings.clinicName}
+              </p>
             </div>
           ) : (
             <img
@@ -109,7 +117,7 @@ export function AdminShell({ children }: { children?: ReactNode }) {
           <button
             type="button"
             onClick={() => setCollapsed((v) => !v)}
-            className={`mb-2 flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-[13px] text-white/65 transition-colors hover:bg-white/5 hover:text-white ${
+            className={`mb-2 flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-[13px] text-white/65 hover:bg-white/5 hover:text-white ${
               collapsed ? 'justify-center px-2' : ''
             }`}
           >
@@ -119,10 +127,10 @@ export function AdminShell({ children }: { children?: ReactNode }) {
           <button
             type="button"
             onClick={() => {
-              logout();
+              doctorLogout();
               navigate('/login');
             }}
-            className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-[13px] text-white/65 transition-colors hover:bg-rose-500/20 hover:text-rose-200 ${
+            className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-[13px] text-white/65 hover:bg-rose-500/20 hover:text-rose-200 ${
               collapsed ? 'justify-center px-2' : ''
             }`}
           >
@@ -145,29 +153,16 @@ export function AdminShell({ children }: { children?: ReactNode }) {
               <div>
                 <img
                   src={BRAND.logoSrc}
-                  alt={settings.clinicName}
-                  className="h-8 w-auto max-w-[150px] rounded-md bg-white object-contain px-1.5 py-0.5"
+                  alt=""
+                  className="h-8 w-auto max-w-[140px] rounded-md bg-white object-contain px-1.5 py-0.5"
                 />
-                <p className="kicker !text-[9px] !text-accent-gold-light mt-1">Admin Console</p>
+                <p className="mt-1 text-[11px] text-accent-gold-light">{currentDoctor?.name}</p>
               </div>
               <button type="button" onClick={() => setMobileOpen(false)} aria-label="Close">
                 <X className="h-5 w-5" />
               </button>
             </div>
             <NavLinks />
-            <div className="border-t border-white/10 p-3">
-              <button
-                type="button"
-                onClick={() => {
-                  logout();
-                  navigate('/login');
-                }}
-                className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-[13px] text-white/65 hover:bg-rose-500/20 hover:text-rose-200"
-              >
-                <LogOut className="h-4 w-4" />
-                Sign out
-              </button>
-            </div>
           </aside>
         </div>
       )}
@@ -183,22 +178,26 @@ export function AdminShell({ children }: { children?: ReactNode }) {
             >
               <Menu className="h-4 w-4" />
             </button>
-            <div>
-              <p className="text-[13px] font-medium">Clinic operations</p>
-              <p className="text-[11px] text-text-muted">Appointments, patients & care team</p>
+            <div className="flex items-center gap-3">
+              {currentDoctor && (
+                <img
+                  src={currentDoctor.imageUrl}
+                  alt=""
+                  className="hidden h-9 w-9 rounded-full object-cover sm:block"
+                />
+              )}
+              <div>
+                <p className="text-[13px] font-medium">{currentDoctor?.name ?? 'Doctor'}</p>
+                <p className="text-[11px] text-text-muted">{currentDoctor?.specialty}</p>
+              </div>
             </div>
           </div>
-          <div className="flex items-center gap-3">
-            <a
-              href="/"
-              className="kicker hidden rounded-full border border-bg-warm bg-white px-3 py-2 !text-[10px] !text-text-primary sm:inline-flex"
-            >
-              View website
-            </a>
-            <div className="grid h-9 w-9 place-items-center rounded-full bg-bg-charcoal text-[11px] font-semibold text-white">
-              AD
-            </div>
-          </div>
+          <a
+            href="/"
+            className="kicker hidden rounded-full border border-bg-warm bg-white px-3 py-2 !text-[10px] !text-text-primary sm:inline-flex"
+          >
+            View website
+          </a>
         </header>
         <main className="flex-1 p-4 sm:p-6 lg:p-8">{children ?? <Outlet />}</main>
       </div>

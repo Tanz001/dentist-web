@@ -90,10 +90,10 @@ export default function Hero({ onBookClick, onShrinkChange }: HeroProps) {
           className="absolute inset-0 z-20 flex flex-col justify-end sm:justify-center px-6 sm:px-12 md:px-16 lg:px-24 pb-28 sm:pb-0 pt-28 pointer-events-none"
         >
           <div className="max-w-2xl pointer-events-auto">
-            <p className="kicker text-accent-gold-light mb-3">Beverly Hills · Boutique Care</p>
+            <p className="kicker text-accent-gold-light mb-3">Johar Town · Lahore</p>
 
             <h1 className="font-serif text-white tracking-tight leading-[0.92]">
-              <span className="block text-[clamp(3.5rem,12vw,8rem)] font-medium">AURA</span>
+              <span className="block text-[clamp(2.5rem,8vw,5.5rem)] font-medium">Aesthetic Lounge</span>
               <span className="block mt-2 text-[clamp(1.35rem,3.5vw,2.25rem)] font-light text-white/90">
                 A smile crafted with{' '}
                 <span className="italic text-accent-gold-light">quiet precision</span>
@@ -101,7 +101,7 @@ export default function Hero({ onBookClick, onShrinkChange }: HeroProps) {
             </h1>
 
             <p className="mt-5 text-sm sm:text-base text-white/70 leading-relaxed max-w-md">
-              Modern dentistry in a calm private suite — clinical excellence without the clinical feel.
+              Dental and aesthetic care opposite G1 Market — clinical excellence without the clinical feel.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-4">

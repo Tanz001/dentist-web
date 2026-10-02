@@ -57,16 +57,18 @@ export type AdminSettings = {
   hours: string;
 };
 
-export const ADMIN_PASSWORD = 'aura2026';
-export const AUTH_KEY = 'aura-admin-auth';
-export const STORAGE_KEY = 'aura-admin-v1';
-export const BOOKINGS_KEY = 'aura_dental_bookings';
+export const ADMIN_PASSWORD = 'lounge2026';
+export const DOCTOR_PASSWORD = 'doctor2026';
+export const AUTH_KEY = 'aesthetic-lounge-admin-auth';
+export const DOCTOR_AUTH_KEY = 'aesthetic-lounge-doctor-auth';
+export const STORAGE_KEY = 'aesthetic-lounge-admin-v1';
+export const BOOKINGS_KEY = 'aesthetic_lounge_bookings';
 
 export const DEFAULT_SETTINGS: AdminSettings = {
-  clinicName: 'Aura Dental',
-  phone: '+1 (555) 014-2200',
-  email: 'hello@aura.dental',
-  address: '48 Willow Lane, Suite 200',
+  clinicName: 'Aesthetic Lounge',
+  phone: '+92 327 2668844',
+  email: 'hello@aestheticlounge.pk',
+  address: 'Opposite to G1 Market, Johar Town, Lahore, Pakistan, 54000',
   hours: 'Mon–Sat · 9:00 AM – 6:00 PM',
 };
 

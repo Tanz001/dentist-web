@@ -14,22 +14,28 @@ const STATUSES: AppointmentStatus[] = [
 ];
 
 export function AdminAppointments() {
-  const { appointments, updateAppointmentStatus, deleteAppointment } = useAdmin();
+  const { appointments, doctors, updateAppointmentStatus, deleteAppointment } = useAdmin();
   const navigate = useNavigate();
   const [q, setQ] = useState('');
   const [status, setStatus] = useState<'all' | AppointmentStatus>('all');
+  const [doctor, setDoctor] = useState('all');
   const [openMenu, setOpenMenu] = useState<string | null>(null);
 
   const filtered = useMemo(() => {
     return [...appointments]
-      .sort((a, b) => b.preferredDate.localeCompare(a.preferredDate) || a.preferredTime.localeCompare(b.preferredTime))
+      .sort(
+        (a, b) =>
+          b.preferredDate.localeCompare(a.preferredDate) ||
+          a.preferredTime.localeCompare(b.preferredTime),
+      )
       .filter((a) => {
         if (status !== 'all' && a.status !== status) return false;
+        if (doctor !== 'all' && a.dentistName !== doctor) return false;
         if (!q.trim()) return true;
         const hay = `${a.name} ${a.email} ${a.phone} ${a.service} ${a.dentistName}`.toLowerCase();
         return hay.includes(q.toLowerCase());
       });
-  }, [appointments, q, status]);
+  }, [appointments, q, status, doctor]);
 
   return (
     <div className="space-y-6">
@@ -37,7 +43,7 @@ export function AdminAppointments() {
         <p className="kicker">Schedule</p>
         <h1 className="mt-1 font-serif text-3xl sm:text-4xl">Appointments</h1>
         <p className="mt-2 text-[13px] text-text-muted">
-          {filtered.length} shown · use ⋯ for actions or open full detail
+          {filtered.length} shown · filter by doctor or open ⋯ for actions
         </p>
       </div>
 
@@ -65,14 +71,28 @@ export function AdminAppointments() {
         ))}
       </div>
 
-      <div className="relative max-w-lg">
-        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted" />
-        <input
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-          placeholder="Search patient, service, doctor…"
-          className="w-full rounded-xl border border-bg-warm bg-white py-2.5 pl-10 pr-3 text-[13px] outline-none focus:border-accent-gold"
-        />
+      <div className="flex flex-wrap gap-3">
+        <div className="relative min-w-[220px] flex-1 max-w-lg">
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted" />
+          <input
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="Search patient, service, doctor…"
+            className="w-full rounded-xl border border-bg-warm bg-white py-2.5 pl-10 pr-3 text-[13px] outline-none focus:border-accent-gold"
+          />
+        </div>
+        <select
+          value={doctor}
+          onChange={(e) => setDoctor(e.target.value)}
+          className="rounded-xl border border-bg-warm bg-white px-3 py-2.5 text-[13px] outline-none focus:border-accent-gold"
+        >
+          <option value="all">All doctors</option>
+          {doctors.map((d) => (
+            <option key={d.id} value={d.name}>
+              {d.name}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div className="overflow-hidden rounded-2xl border border-bg-warm bg-white shadow-sm">

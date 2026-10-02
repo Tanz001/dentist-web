@@ -1,5 +1,6 @@
 import { useEffect, useState, type MouseEvent } from 'react';
 import { Menu, X, CalendarDays } from 'lucide-react';
+import { BRAND } from '../brand';
 
 interface NavigationProps {
   onBookClick: () => void;
@@ -65,22 +66,18 @@ export default function Navigation({ onBookClick, isShrank = false }: Navigation
           <a
             href="#home"
             onClick={(e) => handleLinkClick(e, 'home')}
-            className={`flex items-center gap-2.5 font-serif font-medium text-xl tracking-tight cursor-pointer transition-colors duration-500 ${
-              isShrank ? 'text-text-primary' : 'text-white'
-            }`}
+            className="flex items-center gap-2.5 cursor-pointer"
           >
-            <span className={`w-8 h-8 rounded-full border flex items-center justify-center transition-colors duration-500 ${
-              isShrank ? 'border-accent-gold/40' : 'border-white/40'
-            }`}>
-              <span className={`font-serif text-sm transition-colors duration-500 ${
-                isShrank ? 'text-accent-gold' : 'text-accent-gold-light'
-              }`}>A</span>
-            </span>
-            <span>AURA</span>
-            <span className={`font-sans font-light text-sm tracking-widest hidden sm:inline transition-colors duration-500 ${
-              isShrank ? 'text-text-muted' : 'text-white/60'
-            }`}>
-              DENTAL
+            <span
+              className={`rounded-full bg-white/95 px-2.5 py-1.5 shadow-sm border transition-all duration-500 ${
+                isShrank ? 'border-accent-gold/20' : 'border-white/30'
+              }`}
+            >
+              <img
+                src={BRAND.logoSrc}
+                alt={BRAND.fullName}
+                className="h-8 w-auto max-w-[180px] object-contain sm:h-9 sm:max-w-[220px]"
+              />
             </span>
           </a>
 
@@ -108,7 +105,27 @@ export default function Navigation({ onBookClick, isShrank = false }: Navigation
             ))}
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <a
+              href="/login?role=doctor"
+              className={`hidden md:inline-flex items-center rounded-full border px-4 py-2.5 text-[11px] font-semibold uppercase tracking-wide transition-all duration-300 ${
+                isShrank
+                  ? 'border-bg-charcoal/15 text-text-primary hover:border-accent-gold hover:text-accent-gold'
+                  : 'border-white/35 text-white hover:border-accent-gold-light hover:text-accent-gold-light'
+              }`}
+            >
+              Doctor
+            </a>
+            <a
+              href="/login?role=admin"
+              className={`hidden sm:inline-flex items-center rounded-full border px-4 py-2.5 text-[11px] font-semibold uppercase tracking-wide transition-all duration-300 ${
+                isShrank
+                  ? 'border-bg-charcoal/15 text-text-primary hover:border-accent-gold hover:text-accent-gold'
+                  : 'border-white/35 text-white hover:border-accent-gold-light hover:text-accent-gold-light'
+              }`}
+            >
+              Admin
+            </a>
             <button
               onClick={onBookClick}
               className="btn-primary !px-5 !py-2.5 text-[11px]"
@@ -152,11 +169,30 @@ export default function Navigation({ onBookClick, isShrank = false }: Navigation
             ))}
           </div>
 
-          <div className="mt-12 pt-8 border-t border-accent-gold/15 text-sm text-text-muted">
-            <p className="font-sans leading-relaxed">
-              Mon — Fri: 8:00 AM — 6:00 PM<br />
-              Saturday: 9:00 AM — 3:00 PM
+          <div className="mt-12 pt-8 border-t border-accent-gold/15 space-y-4">
+            <p className="text-sm text-text-muted font-sans leading-relaxed">
+              {BRAND.hours}
+              <br />
+              <a href={`tel:${BRAND.phoneTel}`} className="text-text-primary font-medium">
+                {BRAND.phoneDisplay}
+              </a>
             </p>
+            <div className="flex flex-wrap gap-3">
+              <a
+                href="/login?role=doctor"
+                className="inline-flex items-center justify-center rounded-full border border-bg-charcoal/20 px-5 py-2.5 text-[11px] font-semibold uppercase tracking-wide text-text-primary"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Doctor login
+              </a>
+              <a
+                href="/login?role=admin"
+                className="inline-flex items-center justify-center rounded-full bg-bg-charcoal px-5 py-2.5 text-[11px] font-semibold uppercase tracking-wide text-white"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Admin login
+              </a>
+            </div>
           </div>
         </div>
       )}
