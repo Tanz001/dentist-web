@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Sparkles, CalendarDays, CheckCircle, ShieldAlert, ArrowRight, UserCheck, Stethoscope } from 'lucide-react';
+import { CalendarDays, CheckCircle, ShieldAlert, ArrowRight, UserCheck, Stethoscope } from 'lucide-react';
 import { BookingFormData } from '../types';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -94,7 +94,7 @@ export default function BookingForm({
       x: 10 + Math.random() * 80, // percentage 10% - 90%
       y: 70 + Math.random() * 30, // vertical starting line bottom
       size: 6 + Math.random() * 8, // diameter in pixels
-      color: Math.random() > 0.5 ? '#1E7F73' : '#FF7A59', // Teal or Coral
+      color: Math.random() > 0.5 ? '#C4A962' : '#8BA399',
       scale: 0.5 + Math.random() * 0.8,
     }));
     setConfettiDots(dots);
@@ -175,14 +175,14 @@ export default function BookingForm({
     <section
       ref={formSectionRef}
       id="booking"
-      className="py-24 md:py-36 bg-bg-base relative overflow-hidden px-6"
+      className="py-28 md:py-40 bg-bg-ivory relative overflow-hidden px-6"
     >
       {/* Decorative smile-curve separator at the top */}
       <div className="absolute top-0 left-0 w-full overflow-hidden leading-[0] h-12">
         <svg
           viewBox="0 0 1200 120"
           preserveAspectRatio="none"
-          className="relative block w-full h-12 text-deep-navy fill-current"
+          className="relative block w-full h-12 text-bg-charcoal fill-current"
         >
           <path d="M0,0 C300,50 900,50 1200,0 L1200,120 L0,120 Z" />
         </svg>
@@ -217,84 +217,73 @@ export default function BookingForm({
           {/* COLUMN 1: Calming visual / active bookings panel (lg:col-span-5) */}
           <div
             ref={leftColumnRef}
-            className="lg:col-span-5 bg-bg-alt/60 border border-primary-teal/10 rounded-[36px] p-8 md:p-10 flex flex-col justify-between relative overflow-hidden"
+            className="lg:col-span-5 bg-bg-cream border border-accent-gold/15 rounded-[36px] p-8 md:p-10 flex flex-col justify-between relative overflow-hidden"
           >
-            {/* Ambient grid overlay */}
-            <div className="absolute inset-x-0 bottom-0 top-1/2 bg-gradient-to-t from-highlight-glow/10 to-transparent pointer-events-none" />
+            <div className="absolute inset-x-0 bottom-0 top-1/2 bg-gradient-to-t from-accent-gold-light/10 to-transparent pointer-events-none" />
 
             <div className="space-y-6 relative z-10">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/60 border border-primary-teal/15 rounded-full">
-                <CalendarDays size={13} className="text-primary-teal" />
-                <span className="text-[10px] font-mono tracking-widest text-primary-teal uppercase">Schedule Dashboard</span>
-              </div>
+              <span className="kicker flex items-center gap-2">
+                <CalendarDays size={13} />
+                Schedule Your Visit
+              </span>
 
               <div className="space-y-2">
-                <h3 className="text-2xl sm:text-3xl font-serif text-deep-navy font-light leading-tight">
-                  Your journey to <br />
-                  reconstructed <span className="italic">radiance</span>
+                <h3 className="text-2xl sm:text-3xl font-serif text-text-primary font-light leading-tight">
+                  Your journey to{' '}
+                  <span className="italic">radiance</span>
                 </h3>
-                <p className="text-xs text-text-muted leading-relaxed">
-                  Reserve your custom suite session. We strictly guard patient buffers, ensuring you never wait in a crowded lobby. Feel completely reassured.
+                <p className="text-sm text-text-muted leading-relaxed">
+                  Reserve your private suite session. We guard patient buffers carefully — you never wait in a crowded lobby.
                 </p>
               </div>
 
-              {/* Immersive Doctor and Patient consultation visual card */}
-              <div className="w-full aspect-[4/3] rounded-3xl bg-white/40 border border-white/80 overflow-hidden relative shadow-lg group">
+              <div className="w-full aspect-[4/3] rounded-3xl bg-bg-warm border border-accent-gold/10 overflow-hidden relative shadow-lg group">
                 <img
                   src="https://images.unsplash.com/photo-1598256989800-fe5f95da9787?auto=format&fit=crop&q=80&w=800"
-                  alt="Doctor Rostova advising happy patient"
-                  className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                  alt="Doctor advising happy patient"
+                  className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105 sepia-[0.08]"
                   referrerPolicy="no-referrer"
                 />
-                
-                {/* Visual indicator overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
-                
-                <div className="absolute top-4 left-4 flex items-center gap-1.5 bg-[#FAF8F4]/90 backdrop-blur-md px-2.5 py-1 rounded-full border border-primary-teal/10">
-                  <span className="w-2 h-2 rounded-full bg-cta-coral animate-pulse" />
-                  <span className="font-mono text-[8px] text-deep-navy font-bold uppercase tracking-wider">Clinical Space Live</span>
-                </div>
-
+                <div className="absolute inset-0 bg-gradient-to-t from-bg-charcoal/60 via-transparent to-transparent pointer-events-none" />
                 <div className="absolute bottom-4 left-4 right-4 text-left pointer-events-none">
-                  <span className="text-[10px] uppercase font-bold text-highlight-glow font-mono tracking-wider">LUMIA DIAGNOSTICK PANEL</span>
-                  <p className="text-xs text-white font-serif leading-none mt-0.5">Custom Smile Alignment & Restoration Preparation</p>
+                  <p className="text-sm text-white font-serif">Private consultation suite</p>
+                  <p className="text-xs text-white/60 mt-0.5">Warm, unhurried, entirely yours</p>
                 </div>
               </div>
             </div>
 
-            {/* List of upcoming appointments scheduled locally */}
-            <div className="pt-8 border-t border-primary-teal/15 mt-8 space-y-4 relative z-10">
-              <h4 className="text-xs font-mono tracking-widest text-[#7C8782] uppercase flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary-teal" />
-                Your Registered Appointments ({activeBookings.length})
+            <div className="pt-8 border-t border-accent-gold/15 mt-8 space-y-4 relative z-10">
+              <h4 className="text-xs tracking-widest text-text-muted uppercase flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-accent-gold" />
+                Your Appointments ({activeBookings.length})
               </h4>
 
               {activeBookings.length === 0 ? (
-                <div className="p-4 rounded-2xl bg-white/20 border border-dashed border-primary-teal/10 flex items-center gap-3">
+                <div className="p-4 rounded-2xl bg-bg-ivory border border-dashed border-accent-gold/15 flex items-center gap-3">
                   <ShieldAlert size={16} className="text-text-muted shrink-0" />
-                  <p className="text-[10px] text-text-muted leading-relaxed">No upcoming consultation slots active. Fill out the scheduler to register your visit plan.</p>
+                  <p className="text-sm text-text-muted leading-relaxed">No upcoming consultations. Complete the form to reserve your visit.</p>
                 </div>
               ) : (
                 <div className="space-y-3 max-h-[220px] overflow-y-auto scrollbar-none pr-1">
                   {activeBookings.map((booking, idx) => (
                     <div
                       key={idx}
-                      className="p-4 rounded-2xl bg-white border border-primary-teal/10 flex items-start justify-between gap-3 shadow-xs hover:border-cta-coral transition-colors"
+                      className="p-4 rounded-2xl bg-bg-ivory border border-accent-gold/10 flex items-start justify-between gap-3 hover:border-accent-gold/30 transition-colors"
                     >
                       <div className="space-y-1.5">
                         <div className="flex items-center gap-2">
-                          <CheckCircle size={13} className="text-primary-teal" />
-                          <span className="text-[11px] font-bold text-deep-navy">{booking.service}</span>
+                          <CheckCircle size={13} className="text-accent-sage-deep" />
+                          <span className="text-sm font-medium text-text-primary">{booking.service}</span>
                         </div>
-                        <p className="text-[10px] text-text-muted font-light leading-relaxed">
-                          Patient: <strong className="text-text-primary font-medium">{booking.name}</strong><br />
-                          Specialist: <strong className="text-text-primary font-medium">{booking.dentistName}</strong><br />
-                          Date: <span className="text-primary-teal font-medium font-mono">{booking.preferredDate}</span> ({booking.preferredTime})
+                        <p className="text-xs text-text-muted leading-relaxed">
+                          Patient: <strong className="text-text-primary">{booking.name}</strong><br />
+                          Specialist: <strong className="text-text-primary">{booking.dentistName}</strong><br />
+                          Date: <span className="text-accent-gold font-mono">{booking.preferredDate}</span> ({booking.preferredTime})
                         </p>
                       </div>
                       <button
                         onClick={() => handleCancelBooking(idx)}
-                        className="text-[9px] font-mono tracking-wider uppercase text-cta-coral hover:bg-cta-coral/5 px-2 py-1 rounded border border-cta-coral/10 transition-colors shrink-0"
+                        className="text-[10px] tracking-wider uppercase text-accent-gold hover:bg-accent-gold/5 px-2 py-1 rounded border border-accent-gold/15 transition-colors shrink-0 cursor-pointer"
                       >
                         Cancel
                       </button>
@@ -309,56 +298,55 @@ export default function BookingForm({
           {/* COLUMN 2: Friendly Consultation Booking Form Card (lg:col-span-7) */}
           <div
             ref={rightColumnRef}
-            className="lg:col-span-7 bg-white border border-primary-teal/5 p-8 md:p-12 rounded-[36px] shadow-xl flex flex-col justify-center relative"
+            className="lg:col-span-7 bg-bg-ivory border border-accent-gold/10 p-8 md:p-12 rounded-[36px] shadow-lg flex flex-col justify-center relative"
           >
             
             {/* SUCCESS SHEET VIEW */}
             {isSubmitted ? (
               <div className="space-y-8 text-center py-8">
-                <div className="w-20 h-20 rounded-full bg-primary-teal/5 border-2 border-primary-teal flex items-center justify-center text-primary-teal mx-auto animate-bounce">
+                <div className="w-20 h-20 rounded-full bg-accent-gold/10 border-2 border-accent-gold flex items-center justify-center text-accent-gold mx-auto">
                   <UserCheck size={36} />
                 </div>
 
                 <div className="space-y-3">
-                  <span className="text-[10px] font-mono tracking-widest text-[#1E7F73] uppercase bg-bg-alt px-4 py-1.5 rounded-full border border-primary-teal/10">
-                    Registration Completed Successfully
+                  <span className="text-[10px] tracking-widest text-accent-sage-deep uppercase bg-bg-cream px-4 py-1.5 rounded-full border border-accent-gold/15">
+                    Registration Complete
                   </span>
-                  <h3 className="text-3xl font-serif text-deep-navy">We are preparing your visit</h3>
-                  <p className="text-xs text-text-muted leading-relaxed max-w-md mx-auto">
-                    Thank you, <strong className="text-text-primary font-bold">{formData.name}</strong>. Your wellness reservation for <strong className="text-text-primary font-bold">{formData.service}</strong> with <strong className="text-text-primary font-bold">{formData.dentistName}</strong> is verified. A private clinical coordinator will reach out to your line shortly.
+                  <h3 className="text-3xl font-serif text-text-primary">We are preparing your visit</h3>
+                  <p className="text-sm text-text-muted leading-relaxed max-w-md mx-auto">
+                    Thank you, <strong className="text-text-primary">{formData.name}</strong>. Your reservation for <strong className="text-text-primary">{formData.service}</strong> with <strong className="text-text-primary">{formData.dentistName}</strong> is confirmed. A private coordinator will reach out shortly.
                   </p>
                 </div>
 
-                {/* Patient Summary Slip */}
-                <div className="max-w-md mx-auto p-6 rounded-2xl bg-[#FAF8F4] border border-primary-teal/10 text-left space-y-3 font-mono text-xs">
-                  <div className="flex justify-between border-b border-primary-teal/5 pb-2">
-                    <span className="text-text-muted uppercase">TICKET TYPE:</span>
-                    <span className="text-deep-navy font-bold">VIP CONSULTATION</span>
+                <div className="max-w-md mx-auto p-6 rounded-2xl bg-bg-cream border border-accent-gold/15 text-left space-y-3 text-xs">
+                  <div className="flex justify-between border-b border-accent-gold/10 pb-2">
+                    <span className="text-text-muted uppercase">Type</span>
+                    <span className="text-text-primary font-medium">Private Consultation</span>
                   </div>
-                  <div className="flex justify-between border-b border-primary-teal/5 pb-2">
-                    <span className="text-text-muted uppercase">APPOINTMENT DATE:</span>
-                    <span className="text-primary-teal font-bold">{formData.preferredDate}</span>
+                  <div className="flex justify-between border-b border-accent-gold/10 pb-2">
+                    <span className="text-text-muted uppercase">Date</span>
+                    <span className="text-accent-gold font-medium">{formData.preferredDate}</span>
                   </div>
-                  <div className="flex justify-between border-b border-primary-teal/5 pb-2">
-                    <span className="text-text-muted uppercase">PREFERRED TIME:</span>
-                    <span className="text-deep-navy font-bold">{formData.preferredTime}</span>
+                  <div className="flex justify-between border-b border-accent-gold/10 pb-2">
+                    <span className="text-text-muted uppercase">Time</span>
+                    <span className="text-text-primary font-medium">{formData.preferredTime}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-text-muted uppercase">TRIAGE CONTACT:</span>
-                    <span className="text-deep-navy">{formData.phone}</span>
+                    <span className="text-text-muted uppercase">Contact</span>
+                    <span className="text-text-primary">{formData.phone}</span>
                   </div>
                 </div>
 
                 <div className="pt-4 flex justify-center gap-4">
                   <button
                     onClick={handleResetForm}
-                    className="bg-primary-teal/5 text-primary-teal hover:bg-primary-teal/10 text-xs font-bold tracking-wider uppercase px-8 py-3.5 rounded-full transition-all cursor-pointer"
+                    className="bg-accent-gold/10 text-accent-gold hover:bg-accent-gold/15 text-xs font-semibold tracking-wider uppercase px-8 py-3.5 rounded-full transition-all cursor-pointer"
                   >
                     Schedule Another
                   </button>
                   <a
                     href="#home"
-                    className="bg-cta-coral text-white hover:bg-cta-coral/95 text-xs font-bold tracking-wider uppercase px-8 py-3.5 rounded-full transition-all inline-flex items-center gap-1 shadow-md hover:scale-[1.03]"
+                    className="bg-accent-gold text-white hover:bg-accent-gold/90 text-xs font-semibold tracking-wider uppercase px-8 py-3.5 rounded-full transition-all inline-flex items-center gap-1 shadow-sm"
                   >
                     <span>Back to Top</span>
                     <ArrowRight size={13} />
@@ -371,9 +359,9 @@ export default function BookingForm({
               <form onSubmit={handleSubmit} className="space-y-6">
                 
                 <div className="space-y-2 animate-field">
-                  <h3 className="text-2xl font-serif text-deep-navy">Bespoke Reservation Scheduler</h3>
-                  <p className="text-xs text-text-muted leading-relaxed">
-                    Please provide your contact variables to lock in custom dental consultation matching.
+                  <h3 className="text-2xl font-serif text-text-primary">Reserve Your Consultation</h3>
+                  <p className="text-sm text-text-muted leading-relaxed">
+                    Share your details and we'll match you with the right specialist.
                   </p>
                 </div>
 
@@ -382,7 +370,7 @@ export default function BookingForm({
                   {/* Name Input */}
                   <div className="space-y-1.5 animate-field">
                     <label htmlFor="form-name" className="text-[10px] font-mono tracking-wider uppercase text-text-muted block">
-                      Full Legal Name <span className="text-cta-coral">*</span>
+                      Full Name <span className="text-accent-gold">*</span>
                     </label>
                     <input
                       id="form-name"
@@ -392,14 +380,14 @@ export default function BookingForm({
                       value={formData.name}
                       onChange={handleInputChange}
                       placeholder="e.g. Victoria Sterling"
-                      className="w-full text-sm border border-neutral-200 hover:border-primary-teal/30 focus:border-primary-teal focus:ring-1 focus:ring-primary-teal rounded-xl px-4 py-3 outline-none transition-colors"
+                      className="w-full text-sm border border-accent-gold/20 hover:border-accent-gold/40 focus:border-accent-gold focus:ring-1 focus:ring-accent-gold bg-bg-cream rounded-xl px-4 py-3 outline-none transition-colors"
                     />
                   </div>
 
                   {/* Email Input */}
                   <div className="space-y-1.5 animate-field">
                     <label htmlFor="form-email" className="text-[10px] font-mono tracking-wider uppercase text-text-muted block">
-                      Email Address <span className="text-cta-coral">*</span>
+                      Email Address <span className="text-accent-gold">*</span>
                     </label>
                     <input
                       id="form-email"
@@ -409,14 +397,14 @@ export default function BookingForm({
                       value={formData.email}
                       onChange={handleInputChange}
                       placeholder="e.g. victoria@gmail.com"
-                      className="w-full text-sm border border-neutral-200 hover:border-primary-teal/30 focus:border-primary-teal focus:ring-1 focus:ring-primary-teal rounded-xl px-4 py-3 outline-none transition-colors"
+                      className="w-full text-sm border border-accent-gold/20 hover:border-accent-gold/40 focus:border-accent-gold focus:ring-1 focus:ring-accent-gold bg-bg-cream rounded-xl px-4 py-3 outline-none transition-colors"
                     />
                   </div>
 
                   {/* Phone Input */}
                   <div className="space-y-1.5 animate-field">
                     <label htmlFor="form-phone" className="text-[10px] font-mono tracking-wider uppercase text-text-muted block">
-                      Phone Number <span className="text-cta-coral">*</span>
+                      Phone Number <span className="text-accent-gold">*</span>
                     </label>
                     <input
                       id="form-phone"
@@ -426,7 +414,7 @@ export default function BookingForm({
                       value={formData.phone}
                       onChange={handleInputChange}
                       placeholder="e.g. (555) 0192-384"
-                      className="w-full text-sm border border-neutral-200 hover:border-primary-teal/30 focus:border-primary-teal focus:ring-1 focus:ring-primary-teal rounded-xl px-4 py-3 outline-none transition-colors"
+                      className="w-full text-sm border border-accent-gold/20 hover:border-accent-gold/40 focus:border-accent-gold focus:ring-1 focus:ring-accent-gold bg-bg-cream rounded-xl px-4 py-3 outline-none transition-colors"
                     />
                   </div>
 
@@ -440,7 +428,7 @@ export default function BookingForm({
                       name="service"
                       value={formData.service}
                       onChange={handleInputChange}
-                      className="w-full text-sm border border-neutral-200 hover:border-primary-teal/30 focus:border-primary-teal focus:ring-1 focus:ring-primary-teal rounded-xl px-4 py-3.5 outline-none bg-white transition-colors cursor-pointer"
+                      className="w-full text-sm border border-accent-gold/20 hover:border-accent-gold/40 focus:border-accent-gold focus:ring-1 focus:ring-accent-gold bg-bg-cream rounded-xl px-4 py-3.5 outline-none transition-colors cursor-pointer"
                     >
                       {serviceCategories.map((type) => (
                         <option key={type} value={type}>
@@ -453,7 +441,7 @@ export default function BookingForm({
                   {/* Date Input */}
                   <div className="space-y-1.5 animate-field">
                     <label htmlFor="form-date" className="text-[10px] font-mono tracking-wider uppercase text-text-muted block">
-                      Preferred Booking Date <span className="text-cta-coral">*</span>
+                      Preferred Date <span className="text-accent-gold">*</span>
                     </label>
                     <input
                       id="form-date"
@@ -462,7 +450,7 @@ export default function BookingForm({
                       required
                       value={formData.preferredDate}
                       onChange={handleInputChange}
-                      className="w-full text-sm border border-neutral-200 hover:border-primary-teal/30 focus:border-primary-teal focus:ring-1 focus:ring-primary-teal rounded-xl px-4 py-3 outline-none transition-colors cursor-pointer"
+                      className="w-full text-sm border border-accent-gold/20 hover:border-accent-gold/40 focus:border-accent-gold focus:ring-1 focus:ring-accent-gold bg-bg-cream rounded-xl px-4 py-3 outline-none transition-colors cursor-pointer"
                     />
                   </div>
 
@@ -476,7 +464,7 @@ export default function BookingForm({
                       name="preferredTime"
                       value={formData.preferredTime}
                       onChange={handleInputChange}
-                      className="w-full text-sm border border-neutral-200 hover:border-primary-teal/30 focus:border-primary-teal focus:ring-1 focus:ring-primary-teal rounded-xl px-4 py-3.5 outline-none bg-white transition-colors cursor-pointer"
+                      className="w-full text-sm border border-accent-gold/20 hover:border-accent-gold/40 focus:border-accent-gold focus:ring-1 focus:ring-accent-gold bg-bg-cream rounded-xl px-4 py-3.5 outline-none transition-colors cursor-pointer"
                     >
                       <option value="08:00 AM — Morning session">08:00 AM — Morning session</option>
                       <option value="10:00 AM — Morning session">10:00 AM — Morning session</option>
@@ -498,13 +486,13 @@ export default function BookingForm({
                           onClick={() => setFormData((prev) => ({ ...prev, dentistName: doc }))}
                           className={`p-3.5 rounded-xl border text-center transition-all cursor-pointer select-none flex flex-col items-center justify-center gap-1 ${
                             formData.dentistName === doc
-                              ? 'border-primary-teal bg-primary-teal/5 shadow-sm'
-                              : 'border-neutral-200 hover:border-primary-teal/30 bg-neutral-50/50'
+                              ? 'border-accent-gold bg-accent-gold/10 shadow-sm'
+                              : 'border-accent-gold/15 hover:border-accent-gold/30 bg-bg-cream'
                           }`}
                         >
-                          <Stethoscope size={14} className={formData.dentistName === doc ? 'text-primary-teal' : 'text-text-muted'} />
-                          <span className="text-[11px] font-semibold text-deep-navy">{doc.split(' ')[1] + ' ' + doc.split(' ')[2]}</span>
-                          <span className="text-[9px] text-[#7C8782]">{doc.startsWith('Dr. Beatrice') ? 'Ceramic Art' : doc.startsWith('Dr. Marcus') ? 'Aligners' : 'Pediatric'}</span>
+                          <Stethoscope size={14} className={formData.dentistName === doc ? 'text-accent-gold' : 'text-text-muted'} />
+                          <span className="text-sm font-medium text-text-primary">{doc.split(' ')[1] + ' ' + doc.split(' ')[2]}</span>
+                          <span className="text-[10px] text-text-muted">{doc.startsWith('Dr. Beatrice') ? 'Ceramic Art' : doc.startsWith('Dr. Marcus') ? 'Aligners' : 'Pediatric'}</span>
                         </div>
                       ))}
                     </div>
@@ -522,24 +510,24 @@ export default function BookingForm({
                       value={formData.notes}
                       onChange={handleInputChange}
                       placeholder="Let us know. e.g. 'I am very anxiety-sensitive to high drill frequencies' or 'Interested in veneers pricing'"
-                      className="w-full text-sm border border-neutral-200 hover:border-primary-teal/30 focus:border-primary-teal focus:ring-1 focus:ring-primary-teal rounded-xl px-4 py-3 outline-none transition-colors resize-none"
+                      className="w-full text-sm border border-accent-gold/20 hover:border-accent-gold/40 focus:border-accent-gold focus:ring-1 focus:ring-accent-gold bg-bg-cream rounded-xl px-4 py-3 outline-none transition-colors resize-none"
                     />
                   </div>
 
                 </div>
 
                 {/* Submit Row */}
-                <div className="pt-6 border-t border-neutral-100 flex flex-col sm:flex-row sm:items-center justify-between gap-6 animate-field">
-                  <div className="flex items-center gap-2.5 text-[10px] text-text-muted select-none">
-                    <CheckCircle size={14} className="text-primary-teal shrink-0" />
-                    <span>Your data is protected under robust clinical medical rules.</span>
+                <div className="pt-6 border-t border-accent-gold/10 flex flex-col sm:flex-row sm:items-center justify-between gap-6 animate-field">
+                  <div className="flex items-center gap-2.5 text-xs text-text-muted select-none">
+                    <CheckCircle size={14} className="text-accent-sage-deep shrink-0" />
+                    <span>Your data is protected under clinical privacy standards.</span>
                   </div>
 
                   <button
                     type="submit"
-                    className="w-full sm:w-auto bg-cta-coral text-white hover:bg-cta-coral/95 text-xs font-bold tracking-wider uppercase px-8 py-4 rounded-full transition-all cursor-pointer inline-flex items-center justify-center gap-2 shadow-md hover:scale-[1.03] hover:shadow-xl active:scale-[0.98] animate-pulse"
+                    className="btn-primary w-full sm:w-auto"
                   >
-                    <span>Secure Booking Ticket</span>
+                    <span>Confirm Booking</span>
                     <ArrowRight size={14} />
                   </button>
                 </div>

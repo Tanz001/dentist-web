@@ -93,7 +93,7 @@ export default function App() {
   };
 
   return (
-    <div id="home" className="min-h-screen bg-bg-base overflow-x-hidden selection:bg-primary-teal selection:text-white">
+    <div id="home" className="min-h-screen bg-bg-base overflow-x-hidden selection:bg-accent-gold selection:text-white">
       
       {/* 1. Brand Navigation Header Bar overlay */}
       <Navigation

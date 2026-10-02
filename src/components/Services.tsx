@@ -1,17 +1,7 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import {
-  Sparkles,
-  Smile,
-  Crown,
-  Heart,
-  Activity,
-  CalendarCheck,
-  Award,
-  Layers,
-  ArrowRight,
-} from 'lucide-react';
+import { ArrowRight, Clock } from 'lucide-react';
 import { ServiceItem } from '../types';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -20,226 +10,216 @@ interface ServicesProps {
   onServiceSelect: (serviceName: string) => void;
 }
 
-export default function Services({ onServiceSelect }: ServicesProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const gridRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLDivElement>(null);
+const services: ServiceItem[] = [
+  {
+    id: 'cleaning',
+    title: 'Wellness Cleanings',
+    description: 'Gentle ultrasonic polishing and protective enamel care in a quiet private suite.',
+    category: 'preventative',
+    iconName: 'sparkles',
+    treatmentTime: '45 min',
+    imageUrl: 'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&q=80&w=1200',
+  },
+  {
+    id: 'cosmetic',
+    title: 'Cosmetic Veneers',
+    description: 'Ultra-thin porcelain, hand-shaded for natural translucency and a luminous smile line.',
+    category: 'cosmetic',
+    iconName: 'smile',
+    treatmentTime: '2 visits',
+    imageUrl: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&q=80&w=1400',
+  },
+  {
+    id: 'ortho',
+    title: 'Clear Aligners',
+    description: 'Custom 3D-planned aligners that shift teeth comfortably — no brackets.',
+    category: 'cosmetic',
+    iconName: 'layers',
+    treatmentTime: '6–12 mo',
+    imageUrl: 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&q=80&w=1200',
+  },
+  {
+    id: 'implants',
+    title: 'Dental Implants',
+    description: 'Titanium roots with custom crowns built for lasting strength and natural feel.',
+    category: 'clinical',
+    iconName: 'crown',
+    treatmentTime: '3 visits',
+    imageUrl: 'https://images.unsplash.com/photo-1598256989800-fe5f95da9787?auto=format&fit=crop&q=80&w=1200',
+  },
+  {
+    id: 'pediatric',
+    title: 'Pediatric Care',
+    description: 'Gentle visits that turn fear into trust — for kids and nervous parents.',
+    category: 'preventative',
+    iconName: 'heart',
+    treatmentTime: '30 min',
+    imageUrl: 'https://images.unsplash.com/photo-1631217868264-e5b1ffefb000?auto=format&fit=crop&q=80&w=1200',
+  },
+  {
+    id: 'emergency',
+    title: 'Emergency Care',
+    description: 'Same-day relief for trauma, pain, and urgent repairs when you need us most.',
+    category: 'clinical',
+    iconName: 'activity',
+    treatmentTime: 'Same day',
+    imageUrl: 'https://images.unsplash.com/photo-1579684389782-64d84b5e901a?auto=format&fit=crop&q=80&w=1200',
+  },
+];
 
-  const services: ServiceItem[] = [
-    {
-      id: 'cleaning',
-      title: 'Wellness Cleanings',
-      description: 'Ultrasonic micro-polishing paired with tea tree oil irrigation for supreme enamel shield.',
-      category: 'preventative',
-      iconName: 'sparkles',
-      treatmentTime: '45 mins',
-    },
-    {
-      id: 'cosmetic',
-      title: 'Cosmetic Artistry',
-      description: 'Ultra-thin porcelain veneers hand-shaded to mirror natural crystalline tooth translucency.',
-      category: 'cosmetic',
-      iconName: 'smile',
-      treatmentTime: '2 sessions',
-    },
-    {
-      id: 'ortho',
-      title: 'Custom 3D Aligners',
-      description: 'Transparent computer-modeled orthotics to comfortably shift teeth without brackets.',
-      category: 'cosmetic',
-      iconName: 'layers',
-      treatmentTime: '6-12 months',
-    },
-    {
-      id: 'implants',
-      title: 'Porcelain Implants',
-      description: 'Biocompatible titanium roots capped with custom dental crowns for robust biting force.',
-      category: 'clinical',
-      iconName: 'crown',
-      treatmentTime: '3 sessions',
-    },
-    {
-      id: 'pediatric',
-      title: 'Gentle Pediatric Care',
-      description: 'Comforting, non-threatening dental examinations that turn dentist fear into a fun adventure.',
-      category: 'preventative',
-      iconName: 'heart',
-      treatmentTime: '30 mins',
-    },
-    {
-      id: 'emergency',
-      title: 'Emergency Care',
-      description: 'On-demand clinical trauma relief, root repairs, and rapid tooth ache mitigation.',
-      category: 'clinical',
-      iconName: 'activity',
-      treatmentTime: 'Immediate',
-    },
-  ];
+export default function Services({ onServiceSelect }: ServicesProps) {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [activeId, setActiveId] = useState('cosmetic');
+  const featured = services.find((s) => s.id === activeId) ?? services[1];
 
   useEffect(() => {
-    if (!gridRef.current || !titleRef.current) return;
-
-    const cards = gridRef.current.querySelectorAll('.service-card');
-
-    // Staggered enter animation for the services cards
-    const anim = gsap.fromTo(
-      cards,
-      {
-        opacity: 0,
-        y: 40,
-        scale: 0.96,
-      },
-      {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        stagger: 0.12,
-        duration: 1.2,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: gridRef.current,
-          start: 'top 85%',
-          end: 'bottom 50%',
-          toggleActions: 'play none none none', // run once comfortably, or reverse if scrubbed
-        },
-      }
-    );
-
-    // Title slide check
-    gsap.fromTo(
-      titleRef.current,
-      { opacity: 0, y: 30 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: titleRef.current,
-          start: 'top 85%',
-        },
-      }
-    );
-
-    return () => {
-      anim.scrollTrigger?.kill();
-    };
+    if (!sectionRef.current) return;
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        '.services-reveal',
+        { y: 32, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          stagger: 0.08,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: { trigger: sectionRef.current, start: 'top 72%' },
+        }
+      );
+    }, sectionRef);
+    return () => ctx.revert();
   }, []);
 
-  const getIcon = (name: string) => {
-    switch (name) {
-      case 'sparkles':
-        return <Sparkles className="w-6 h-6 text-primary-teal group-hover:scale-110 transition-transform duration-300" />;
-      case 'smile':
-        return <Smile className="w-6 h-6 text-primary-teal group-hover:scale-110 transition-transform duration-300" />;
-      case 'layers':
-        return <Layers className="w-6 h-6 text-primary-teal group-hover:scale-110 transition-transform duration-300" />;
-      case 'crown':
-        return <Crown className="w-6 h-6 text-primary-teal group-hover:scale-110 transition-transform duration-300" />;
-      case 'heart':
-        return <Heart className="w-6 h-6 text-primary-teal group-hover:scale-110 transition-transform duration-300" />;
-      case 'activity':
-        return <Activity className="w-6 h-6 text-primary-teal group-hover:scale-110 transition-transform duration-300" />;
-      default:
-        return <Smile className="w-6 h-6 text-primary-teal" />;
-    }
-  };
-
   return (
-    <section
-      ref={containerRef}
-      id="services"
-      className="py-24 md:py-36 bg-bg-base relative overflow-hidden"
-    >
+    <section ref={sectionRef} id="services" className="section-pad bg-bg-ivory">
       <div className="max-w-7xl mx-auto px-6">
-        
-        {/* Title Grouping */}
-        <div
-          ref={titleRef}
-          className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 md:mb-24"
-        >
-          <div className="space-y-4 max-w-2xl">
-            <span className="text-[10px] font-mono tracking-[0.25em] text-primary-teal uppercase block">
-              OUR LUXURIOUS SPECIALTIES
-            </span>
-            <h2 className="text-3xl sm:text-5xl font-serif text-deep-navy font-light leading-tight">
-              Bespoke architectural <br />
-              care for your <span className="italic font-serif font-normal text-primary-teal">smile</span>
+        <div className="services-reveal flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 md:mb-14">
+          <div className="max-w-xl space-y-4">
+            <span className="kicker">Our Treatments</span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif text-text-primary leading-[1.1] tracking-tight">
+              Care shaped around{' '}
+              <span className="italic text-accent-sage-deep">you</span>
             </h2>
+            <p className="text-sm md:text-base text-text-muted leading-relaxed max-w-md">
+              Preview a specialty, then book it — we&apos;ll match you with the right doctor.
+            </p>
           </div>
-          <p className="text-sm md:text-base text-text-muted max-w-sm leading-relaxed">
-            Every service is uniquely tailored and executed under microscopic precision, maintaining supreme structural dentist integrity.
-          </p>
         </div>
 
-        {/* 3-Column Services Grid */}
-        <div
-          ref={gridRef}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-        >
-          {services.map((service) => (
-            <div
-              key={service.id}
-              className="service-card group bg-[#FAF8F4] hover:bg-white rounded-[24px] border border-primary-teal/5 p-8 relative overflow-hidden flex flex-col justify-between h-[320px] transition-all duration-500 shadow-sm hover:shadow-xl hover:border-primary-teal/15 cursor-pointer hover:-translate-y-2 select-none"
-              onClick={() => onServiceSelect(service.title)}
-            >
-              {/* Card visual flash accent line at the left */}
-              <div className="absolute top-0 left-0 w-[4px] h-0 bg-primary-teal group-hover:h-full transition-all duration-500" />
+        <div className="services-reveal grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
+          {/* Featured panel */}
+          <div className="lg:col-span-7 relative rounded-[1.75rem] overflow-hidden min-h-[380px] sm:min-h-[440px] lg:min-h-[520px] group">
+            <img
+              key={featured.id}
+              src={featured.imageUrl}
+              alt={featured.title}
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+              referrerPolicy="no-referrer"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-bg-charcoal/90 via-bg-charcoal/35 to-transparent" />
 
-              {/* Sub-surface card flare sweep reflection */}
-              <div className="absolute -inset-y-4 -left-1/4 w-1/2 bg-gradient-to-r from-transparent via-highlight-glow/10 to-transparent rotate-25 -translate-x-full group-hover:translate-x-[300%] transition-transform duration-1000 ease-in-out pointer-events-none" />
+            <div className="absolute inset-0 p-7 md:p-10 flex flex-col justify-end">
+              <div className="inline-flex items-center gap-2 text-accent-gold-light text-xs font-semibold uppercase tracking-wider mb-3">
+                <Clock size={13} />
+                {featured.treatmentTime}
+              </div>
+              <h3 className="font-serif text-3xl md:text-4xl text-white leading-tight mb-3">
+                {featured.title}
+              </h3>
+              <p className="text-sm text-white/70 leading-relaxed max-w-md mb-6">
+                {featured.description}
+              </p>
+              <button
+                type="button"
+                onClick={() => onServiceSelect(featured.title)}
+                className="btn-primary w-fit"
+              >
+                Book {featured.title}
+                <ArrowRight size={14} />
+              </button>
+            </div>
+          </div>
 
-              <div className="space-y-6">
-                {/* Header Row: Icon and Tag */}
-                <div className="flex items-center justify-between">
-                  <div className="w-12 h-12 rounded-2xl bg-primary-teal/5 flex items-center justify-center group-hover:bg-primary-teal/10 transition-colors">
-                    {getIcon(service.iconName)}
+          {/* List */}
+          <div className="lg:col-span-5 flex flex-col gap-2.5">
+            {services.map((service) => {
+              const active = service.id === activeId;
+              return (
+                <button
+                  key={service.id}
+                  type="button"
+                  onClick={() => setActiveId(service.id)}
+                  onDoubleClick={() => onServiceSelect(service.title)}
+                  className={`flex items-center gap-4 rounded-2xl p-3.5 text-left transition-all duration-300 cursor-pointer border ${
+                    active
+                      ? 'bg-bg-charcoal border-bg-charcoal shadow-lg'
+                      : 'bg-white border-black/5 hover:border-accent-gold/30'
+                  }`}
+                >
+                  <div className="relative w-14 h-14 rounded-xl overflow-hidden shrink-0">
+                    <img
+                      src={service.imageUrl}
+                      alt=""
+                      className={`w-full h-full object-cover transition-all ${
+                        active ? '' : 'grayscale-[0.4] group-hover:grayscale-0'
+                      }`}
+                      referrerPolicy="no-referrer"
+                    />
                   </div>
-                  <span className="text-[10px] font-mono tracking-wider uppercase text-text-muted bg-neutral-100 px-3 py-1 rounded-full border border-neutral-200/50">
-                    {service.treatmentTime}
-                  </span>
-                </div>
-
-                {/* Info Block */}
-                <div className="space-y-2">
-                  <h3 className="text-xl font-serif text-deep-navy font-medium tracking-tight">
-                    {service.title}
-                  </h3>
-                  <p className="text-xs text-text-muted leading-relaxed">
-                    {service.description}
-                  </p>
-                </div>
-              </div>
-
-              {/* Bottom footer linking action info */}
-              <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-primary-teal group-hover:text-cta-coral transition-colors duration-300">
-                <span>Request details</span>
-                <ArrowRight size={13} className="transform group-hover:translate-x-1.5 transition-transform duration-300" />
-              </div>
-
-            </div>
-          ))}
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center justify-between gap-2">
+                      <h4
+                        className={`font-serif text-base truncate ${
+                          active ? 'text-white' : 'text-text-primary'
+                        }`}
+                      >
+                        {service.title}
+                      </h4>
+                      <span
+                        className={`text-[10px] font-semibold uppercase tracking-wider shrink-0 ${
+                          active ? 'text-accent-gold-light' : 'text-text-muted'
+                        }`}
+                      >
+                        {service.treatmentTime}
+                      </span>
+                    </div>
+                    <p
+                      className={`text-xs mt-0.5 line-clamp-1 ${
+                        active ? 'text-white/55' : 'text-text-muted'
+                      }`}
+                    >
+                      {service.description}
+                    </p>
+                  </div>
+                  <ArrowRight
+                    size={14}
+                    className={`shrink-0 transition-all ${
+                      active ? 'text-accent-gold' : 'text-transparent'
+                    }`}
+                  />
+                </button>
+              );
+            })}
+            <p className="text-[11px] text-text-muted text-center pt-2 hidden lg:block">
+              Click to preview · Double-click to book
+            </p>
+          </div>
         </div>
 
-        {/* Dynamic client-care feedback block */}
-        <div className="mt-20 p-8 rounded-[32px] bg-bg-alt flex flex-col lg:flex-row items-center justify-between gap-8 border border-primary-teal/10">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-primary-teal shadow-sm shrink-0">
-              <Award size={22} />
-            </div>
-            <div className="space-y-1">
-              <h4 className="font-serif text-lg text-deep-navy font-medium">Have question about cosmetic vs orthopedic options?</h4>
-              <p className="text-xs text-text-muted">Speak with our treatment coordinators for a free guided clinical matching roadmap.</p>
-            </div>
+        <div className="services-reveal mt-10 flex flex-col sm:flex-row items-center justify-between gap-5 rounded-[1.5rem] bg-bg-cream border border-accent-gold/15 px-7 py-6">
+          <div>
+            <p className="font-serif text-lg md:text-xl text-text-primary">Not sure which treatment?</p>
+            <p className="text-sm text-text-muted mt-0.5">Start with a free consult — we&apos;ll guide you.</p>
           </div>
           <button
+            type="button"
             onClick={() => onServiceSelect('Clinical Consult')}
-            className="w-full lg:w-auto bg-primary-teal text-white hover:bg-deep-navy text-xs font-bold tracking-wider uppercase px-8 py-3.5 rounded-full transition-all duration-300 shadow-md cursor-pointer shrink-0"
+            className="btn-primary shrink-0"
           >
-            Ask a Coordinator
+            Free Consultation
           </button>
         </div>
-
       </div>
     </section>
   );

@@ -5,6 +5,7 @@ export interface ServiceItem {
   category: 'clinical' | 'cosmetic' | 'preventative';
   iconName: string;
   treatmentTime: string;
+  imageUrl: string;
 }
 
 export interface Doctor {
@@ -23,7 +24,8 @@ export interface Testimonial {
   patientName: string;
   serviceReceived: string;
   rating: number;
-  bgTone: string; // Background color variation class for quote transitions
+  bgTone: string;
+  imageUrl: string;
 }
 
 export interface BookingFormData {

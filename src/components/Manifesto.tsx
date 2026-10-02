@@ -1,194 +1,105 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Target, Heart, Sparkles } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function Manifesto() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const textRef = useRef<HTMLHeadingElement>(null);
-  const lineDrawRef = useRef<SVGPathElement>(null);
-  const backgroundDecorRef = useRef<HTMLDivElement>(null);
+const PRINCIPLES = [
+  {
+    num: '01',
+    title: 'Calm first',
+    desc: 'Quiet suites, soft light, and unhurried appointments — anxiety stays outside.',
+  },
+  {
+    num: '02',
+    title: 'Precision craft',
+    desc: 'Every veneer and crown is shaded and shaped to match your natural light.',
+  },
+  {
+    num: '03',
+    title: 'Honest care',
+    desc: 'Clear plans, transparent pricing, and specialists who listen before they treat.',
+  },
+];
 
-  const statement = "We believe a visit to the dentist should feel less like a cold clinical appointment, and more like a quiet moment of wellness and restoration. Guided by warmth, empathy, and state-of-the-art care, we are redefining modern dentistry around your peace of mind.";
+export default function Manifesto() {
+  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    if (!sectionRef.current || !textRef.current) return;
-
-    const words = textRef.current.querySelectorAll('.char-word');
-
-    // Create scrub timeline for the text reveal and background parallax
-    const trigger = ScrollTrigger.create({
-      trigger: sectionRef.current,
-      start: 'top 80%',
-      end: 'bottom 40%',
-      scrub: 0.8,
-    });
-
-    // 1. Staggered blur-to-sharp animation for the words
-    gsap.fromTo(
-      words,
-      {
-        opacity: 0,
-        y: 25,
-        filter: 'blur(8px)',
-      },
-      {
-        opacity: 1,
-        y: 0,
-        filter: 'blur(0px)',
-        stagger: 0.08,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 75%',
-          end: 'bottom 50%',
-          scrub: 0.6,
-        },
-      }
-    );
-
-    // 2. Parallax drift for the abstract background SVG tooth
-    if (backgroundDecorRef.current) {
+    if (!sectionRef.current) return;
+    const ctx = gsap.context(() => {
       gsap.fromTo(
-        backgroundDecorRef.current,
-        { yPercent: -15, rotate: -5 },
+        '.philosophy-reveal',
+        { y: 36, opacity: 0 },
         {
-          yPercent: 15,
-          rotate: 5,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: true,
-          },
+          y: 0,
+          opacity: 1,
+          stagger: 0.1,
+          duration: 0.9,
+          ease: 'power3.out',
+          scrollTrigger: { trigger: sectionRef.current, start: 'top 72%' },
         }
       );
-    }
-
-    // 3. SVG Line drawing for the smile line decoration
-    if (lineDrawRef.current) {
-      gsap.fromTo(
-        lineDrawRef.current,
-        { strokeDashoffset: 1000 },
-        {
-          strokeDashoffset: 0,
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 60%',
-            end: 'bottom 60%',
-            scrub: 1.0,
-          },
-        }
-      );
-    }
-
-    return () => {
-      trigger.kill();
-    };
+    }, sectionRef);
+    return () => ctx.revert();
   }, []);
 
   return (
     <section
       ref={sectionRef}
       id="philosophy"
-      className="relative min-h-[90vh] py-24 md:py-36 bg-bg-alt flex flex-col items-center justify-center overflow-hidden px-6"
+      className="section-pad bg-bg-cream relative overflow-hidden"
     >
-      {/* Curved soft SVG divider at the top (smile-curve) */}
-      <div className="absolute top-0 left-0 w-full overflow-hidden leading-[0] h-12 transform">
-        <svg
-          viewBox="0 0 1200 120"
-          preserveAspectRatio="none"
-          className="relative block w-full h-12 text-[#FAF8F4] fill-current"
-        >
-          <path d="M0,0 C300,100 900,100 1200,0 L1200,120 L0,120 Z" />
-        </svg>
-      </div>
-
-      {/* Parallax outline drawing of a tooth in the background */}
-      <div
-        ref={backgroundDecorRef}
-        className="absolute top-24 opacity-[0.06] text-primary-teal w-full max-w-[500px] aspect-square flex items-center justify-center select-none pointer-events-none z-0"
-      >
-        <svg
-          viewBox="0 0 100 100"
-          className="w-full h-full stroke-current fill-none stroke-[0.5]"
-        >
-          {/* A stylized fine line vector molar tooth crown + roots outline */}
-          <path
-            ref={lineDrawRef}
-            className="outline-tooth-path"
-            d="M 30,15 
-               C 35,10  45,10  50,16 
-               C 55,10  65,10  70,15 
-               C 74,19  75,32  72,40 
-               C 68,52  78,74  70,85 
-               C 64,95  58,90  56,76 
-               C 54,65  50,60  50,60 
-               C 50,60  46,65  44,76 
-               C 42,90  36,95  30,85 
-               C 22,74  32,52  28,40 
-               C 25,32  26,19  30,15 Z"
-          />
-        </svg>
-      </div>
-
-      <div className="max-w-4xl mx-auto text-center relative z-10 space-y-12">
-        {/* Cute kicker identifier */}
-        <div className="flex justify-center items-center gap-1.5 opacity-80">
-          <Heart size={14} className="text-primary-teal stroke-[2.5]" />
-          <span className="text-xs font-mono tracking-[0.2em] uppercase text-primary-teal font-medium">
-            Our Care Philosophy
-          </span>
-        </div>
-
-        {/* The split text statement */}
-        <h2
-          ref={textRef}
-          className="text-2xl sm:text-4xl md:text-5xl font-serif text-deep-navy font-light leading-relaxed select-none"
-        >
-          {statement.split(" ").map((word, index) => (
-            <span
-              key={index}
-              className="char-word inline-block mr-[0.25em] mb-1.5 transition-all"
-            >
-              {word}
-            </span>
-          ))}
-        </h2>
-
-        {/* Three core pillars detailing the clinical soft touch */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-10 text-left border-t border-primary-teal/15">
-          <div className="space-y-3">
-            <h3 className="font-serif text-lg text-deep-navy flex items-center gap-2">
-              <span className="w-6 h-6 rounded-full bg-primary-teal/10 flex items-center justify-center text-primary-teal text-xs font-mono">01</span>
-              Acuity & Silence
-            </h3>
-            <p className="text-xs text-text-muted leading-relaxed">
-              We employ soundproof treatment lounges and state-of-the-art whisper drills to buffer anxiety-triggering clinical environments completely.
-            </p>
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+          {/* Image */}
+          <div className="philosophy-reveal lg:col-span-5 relative">
+            <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden shadow-xl">
+              <img
+                src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&q=80&w=1200"
+                alt="Aura Dental private treatment suite"
+                className="absolute inset-0 w-full h-full object-cover"
+                referrerPolicy="no-referrer"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-bg-charcoal/50 via-transparent to-transparent" />
+              <div className="absolute bottom-6 left-6 right-6">
+                <p className="font-serif text-2xl text-white leading-tight">
+                  Private suites.
+                  <br />
+                  <span className="italic text-accent-gold-light">Zero rush.</span>
+                </p>
+              </div>
+            </div>
+            <div className="absolute -bottom-4 -right-4 hidden sm:flex bg-white rounded-2xl px-5 py-4 shadow-lg border border-accent-gold/10">
+              <div>
+                <p className="font-serif text-2xl text-accent-gold">10+</p>
+                <p className="text-[11px] text-text-muted uppercase tracking-wider mt-0.5">Years of calm care</p>
+              </div>
+            </div>
           </div>
 
-          <div className="space-y-3">
-            <h3 className="font-serif text-lg text-deep-navy flex items-center gap-2">
-              <span className="w-6 h-6 rounded-full bg-primary-teal/10 flex items-center justify-center text-primary-teal text-xs font-mono">02</span>
-              Porcelain Artistry
-            </h3>
-            <p className="text-xs text-text-muted leading-relaxed">
-              Every crown, veneer, and aligner is hand-shaded and sculpted using custom tooth geometry for natural optical luminescence.
-            </p>
-          </div>
+          {/* Copy */}
+          <div className="lg:col-span-7 space-y-10">
+            <div className="philosophy-reveal space-y-4">
+              <span className="kicker">Our Philosophy</span>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif text-text-primary font-normal leading-[1.15] tracking-tight max-w-xl">
+                Dentistry that feels like{' '}
+                <span className="italic text-accent-sage-deep">wellness</span>, not a waiting room.
+              </h2>
+              <p className="text-base text-text-muted leading-relaxed max-w-lg">
+                We rebuilt the dental visit around comfort and craft — so you leave looking better and feeling genuinely at ease.
+              </p>
+            </div>
 
-          <div className="space-y-3">
-            <h3 className="font-serif text-lg text-deep-navy flex items-center gap-2">
-              <span className="w-6 h-6 rounded-full bg-primary-teal/10 flex items-center justify-center text-primary-teal text-xs font-mono">03</span>
-              Nurturing Care
-            </h3>
-            <p className="text-xs text-text-muted leading-relaxed">
-              Warm towels, essential oils, and memory-foam dental suites help you feel fully anchored, heard, and relaxed.
-            </p>
+            <div className="philosophy-reveal grid grid-cols-1 sm:grid-cols-3 gap-8 pt-2 border-t border-accent-gold/15">
+              {PRINCIPLES.map((p) => (
+                <div key={p.num} className="space-y-3 pt-6">
+                  <span className="text-xs font-semibold tracking-widest text-accent-gold">{p.num}</span>
+                  <h3 className="font-serif text-xl text-text-primary">{p.title}</h3>
+                  <p className="text-sm text-text-muted leading-relaxed">{p.desc}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
